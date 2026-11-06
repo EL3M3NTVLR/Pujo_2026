@@ -85,7 +85,8 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
 @keyframes tdot { 0% { opacity: 0; } 12% { opacity: .85; } 100% { opacity: 0; } }
 
 #gate { position: fixed; inset: 0; z-index: 50; background: rgba(7, 6, 7, .93); display: flex; overflow-y: auto; padding: 24px; text-align: center; transition: opacity 1s; }
-#gate.gone { opacity: 0; pointer-events: none; }
+#gate.gone { opacity: 0; pointer-events: none; visibility: hidden; transition: opacity 1s, visibility 0s 1s; }
+#gate.gone * { pointer-events: none; }
 #gate .gin { margin: auto; display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; max-width: 640px; }
 #gate p { margin: 0; color: rgba(238, 230, 216, .85); font-size: 17px; line-height: 1.55; }
 #gate .pref { max-width: 52ch; }
@@ -536,7 +537,7 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   });
   document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") glossHide(); });
   window.addEventListener("scroll", function () { if (gcard.classList.contains("on")) glossHide(); }, { passive: true });
-  var PREFACE = "Durga Pujo is the autumn festival of Bengal, when the goddess Maa Durga comes home for a few days as a daughter, and clay idols are worshipped in temporary pandals across the city. The main days run from Shosthi to Doshomi and end with bishorjon, the immersion of the idol, and about a week before them Mahalaya opens the season with a radio recitation before dawn. This piece is my own Pujo in Kolkata, 2026, told through my steps, phone unlocks, sleep and sounds I recorded on the street. Dotted words have a short gloss: hover, focus or tap.";
+  var PREFACE = "Durga Pujo is the autumn festival of Bengal, when the goddess Maa Durga comes home for a few days as a daughter, and clay idols are worshipped in temporary pandals across the city. The main days run from Shosthi to Doshomi and end with bishorjon, the immersion of the idol, and about a week before them Mahalaya opens the season with a radio recitation before dawn. This piece is my own Pujo in Kolkata, 2026, told through my steps, phone unlocks, sleep and sounds I recorded on the street. Words in boxes have a short gloss: hover, focus or tap.";
   richText($("pref"), PREFACE);
 
   /* ---------------- data ---------------- */
