@@ -13,7 +13,7 @@ A scroll-driven piece about one Durga Pujo, from Mahalaya to Doshomi, told throu
 | Sound | Recorded on my phone; Shosthi's far-off dhak is a filtered copy |
 | Colour | Chosen, not measured; the liquid moves faster on days with more steps |
 
-The same legend appears on the entry screen. Bengali terms in the text carry a dictionary-style gloss (headword, pronunciation, meaning) on hover, keyboard focus or tap. Pronunciations are approximate respellings and IPA and have not had a native review.
+The same legend appears on the entry screen. Bengali terms in the text carry a dictionary-style gloss (headword, pronunciation, meaning) on hover, keyboard focus or tap.
 
 ## Run locally
 
@@ -42,4 +42,8 @@ Import the repository into Vercel as a project with the framework preset "Other"
 - Code written with Claude (Anthropic) under the author's direction.
 - Typeface: Baloo Da 2, SIL Open Font License 1.1.
 
-The piece includes a short tribute to the 19 people who lost their lives at the Chorbagan pandal in Kolkata on 17 October 2026.
+The piece includes a short tribute to the 19 people who lost their lives at the Chorbagan pandal in Kolkata on 17 October 2026, with links to reporting by [The Quint](https://www.thequint.com/amp/story/news/breaking-news/kolkata-durga-puja-pandal-stampede-investigation-updates) and [The Telegraph](https://www.telegraphindia.com/west-bengal/my-mother-died-before-my-eyes-sons-heartbreaking-account-of-kolkata-chorbagan-stampede/cid/2185273).
+
+## Licence
+
+Copyright (c) 2026 Aritra Banerjee. All rights reserved; see `LICENSE`. The Baloo Da 2 typeface is separately licensed under the SIL Open Font License 1.1 (`fonts/LICENSE-OFL.txt`). The Mahalaya excerpt belongs to its original broadcaster and is not covered by this licence.
