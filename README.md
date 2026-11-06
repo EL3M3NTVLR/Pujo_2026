@@ -1,6 +1,6 @@
 # Pujo 2026 Scroll
 
-A scroll-driven piece about one Durga Pujo, from Mahalaya to Doshomi, told through the author's own steps, phone unlocks, sleep and street recordings. Made for portfolio submission. Best on desktop, with headphones.
+A scroll-driven piece about one Durga Pujo, from Mahalaya to Doshomi, told through my own steps, phone unlocks, sleep and street recordings. Made for portfolio submission. Best on desktop, with headphones.
 
 ## How to read it
 
@@ -37,7 +37,7 @@ Import the repository into Vercel as a project with the framework preset "Other"
 
 ## Credits
 
-- Concept, data, text, field recordings and the closing track "Asche Bochor Abar Hobe": the author.
+- Concept, data, text, field recordings and the closing track "Asche Bochor Abar Hobe": Aritra Banerjee
 - Mahalaya excerpt: from the original radio broadcast of Mahishasuramardini, recited by Birendra Krishna Bhadra.
 - Code written with Claude (Anthropic) under the author's direction.
 - Typeface: Baloo Da 2, SIL Open Font License 1.1.
