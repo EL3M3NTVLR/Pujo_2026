@@ -2,20 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pujo 2026 Scroll</title>
-<meta name="description" content="A scroll-driven piece about the ten days of Durga Pujo, built from one person's own steps, phone unlocks, sleep and field recordings. Best on desktop, with sound.">
+<meta name="description" content="A scroll-driven piece about one Durga Pujo, from Mahalaya to Doshomi, told through steps, phone unlocks, sleep and street recordings.">
 <meta name="theme-color" content="#070607">
-<meta property="og:title" content="Pujo 2026 Scroll">
-<meta property="og:description" content="A scroll-driven piece about Durga Pujo, built from one person's own steps, unlocks, sleep and recordings.">
-<link rel="preload" href="fonts/files/baloo-da-2-bengali-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/files/baloo-da-2-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
 /*
-  Layout concept: scroll is time. One fixed stage. A single light changes shape with the day's steps,
-  the dark between days is as long as the sleep before it, unlocks are cold ticks, the Bengali day name
-  is an unlit outline until the day is present. Single dark look by choice.
+  Layout concept: scroll is time. One fixed stage over a WebGL colour field. Footprints are steps, the
+  ribbon's width follows steps and its teeth follow unlocks, the dark between days lasts as long as the
+  sleep before it, unlocks are faint ticks, and the Bengali day name is an unlit outline until the day
+  is present.
 */
 :root {
   --ink: #070607;
@@ -36,23 +33,11 @@ body { margin: 0; color: var(--paper); font-family: var(--font-body); -webkit-te
 #spacer { width: 1px; }
 
 .layer { position: fixed; inset: 0; pointer-events: none; }
-#flood { z-index: 1; opacity: 0; background: radial-gradient(130% 100% at 50% 40%, var(--fc, #c92a1c) 0%, transparent 72%); }
-#light { position: fixed; left: 50%; top: 42%; transform: translate(-50%, -50%); border-radius: 50%; z-index: 2; pointer-events: none;
-  background: radial-gradient(closest-side, var(--c2, #7f93ff) 0%, var(--c1, #2a3fa8) 45%, transparent 100%); }
 #stage { z-index: 5; }
 #grain { z-index: 30; opacity: .2; mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
- #frame { z-index: 6; inset: 8px; border: 1px solid rgba(238,230,216,.38); }
-#frame:after { content: ""; position: absolute; inset: 4px; border: 3px solid rgba(226,55,31,.5); }
-#xh { position: fixed; left: 50%; top: 42%; width: 15px; height: 15px; margin: -7px 0 0 -7px; z-index: 6; pointer-events: none; opacity: .5; }
-#xh:before, #xh:after { content: ""; position: absolute; background: var(--paper); }
-#xh:before { left: 7px; top: 0; width: 1px; height: 15px; } #xh:after { top: 7px; left: 0; height: 1px; width: 15px; }
 #walk { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
-#ruler { position: fixed; right: 18px; top: 13vh; height: 72vh; width: 3px; z-index: 6; display: flex; flex-direction: column; pointer-events: none; }
-#ruler i { display: block; width: 3px; background: rgba(238,230,216,.07); }
-#ruler i.d { background: rgba(238,230,216,.34); }
-#ruler b { position: absolute; left: -3px; width: 9px; height: 9px; border-radius: 50%; background: var(--paper); box-shadow: 0 0 10px var(--paper); margin-top: -4px; top: 0; }
 .ch { display: inline-block; will-change: transform, opacity, filter; }
 #rule { display: block; height: 2px; width: 0; margin: 14px auto 0; background: var(--tx); opacity: .8; }
 .mono { font-family: var(--font-mono); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--hud); margin: 0; }
@@ -70,10 +55,6 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
 #title { font-size: clamp(64px, 19vw, 170px); color: var(--ink); -webkit-text-stroke: 2px var(--tx); paint-order: stroke fill; letter-spacing: .01em; filter: url(#soft); }
 #en { margin-top: 6px; color: var(--tx); letter-spacing: .14em; font-size: 14px; }
 .text { max-width: 52ch; margin: 22px auto 0; font-size: 18px; font-weight: 500; line-height: 1.5; color: var(--tx); }
-.text.ph { color: var(--txa); font-style: italic; }
-.tag { display: inline-block; margin: 22px auto 0; font-family: var(--font-mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--tx); border: 1px dashed var(--tx); padding: 3px 9px; }
-.tag + .text { margin-top: 10px; }
-#tag { display: none; }
 
 #dark .big { font-family: var(--font-mono); font-size: clamp(44px, 12vw, 96px); font-weight: 400; color: rgba(238, 230, 216, .5); font-variant-numeric: tabular-nums; margin: 10px 0 0; }
 #dark .mono { color: var(--hud); }
@@ -84,7 +65,6 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
 #tribute .mono { color: var(--vermilion); letter-spacing: .22em; }
 #deco { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 3; pointer-events: none; }
 #walk { z-index: 4 !important; }
-#bg { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
 #tribute .body, #line .body { max-width: 36ch; margin: 0 auto; font-size: 17px; line-height: 1.55; color: rgba(238, 230, 216, .86); }
 #tribute .bnline, #line .bnline { max-width: 36ch; margin: 14px auto 0; font-family: var(--font-bn); font-weight: 400; font-size: 17px; line-height: 1.7; color: rgba(238, 230, 216, .7); }
 #dots { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 6px 8px; max-width: 540px; margin: 18px auto 22px; min-height: 30px; }
@@ -103,9 +83,34 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
 .tdot.on { animation: tdot .7s ease-out; }
 @keyframes tdot { 0% { opacity: 0; } 12% { opacity: .85; } 100% { opacity: 0; } }
 
-#gate { position: fixed; inset: 0; z-index: 50; background: rgba(7, 6, 7, .93); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; padding: 24px; text-align: center; transition: opacity 1s; }
+#gate { position: fixed; inset: 0; z-index: 50; background: rgba(7, 6, 7, .93); display: flex; overflow-y: auto; padding: 24px; text-align: center; transition: opacity 1s; }
 #gate.gone { opacity: 0; pointer-events: none; }
-#gate p { margin: 0; max-width: 32ch; color: rgba(238, 230, 216, .85); font-size: 17px; line-height: 1.55; }
+#gate .gin { margin: auto; display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; max-width: 640px; }
+#gate p { margin: 0; color: rgba(238, 230, 216, .85); font-size: 17px; line-height: 1.55; }
+#gate .pref { max-width: 52ch; }
+#gate .hint { font-size: 14px; color: var(--dim); }
+.how { width: 100%; max-width: 600px; text-align: left; }
+.how summary { list-style: none; cursor: pointer; text-align: center; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(238, 230, 216, .75); padding: 8px; }
+.how summary::-webkit-details-marker { display: none; }
+.how summary::after { content: " +"; }
+.how[open] summary::after { content: " \2212"; }
+.how ul { list-style: none; margin: 6px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 24px; }
+.how li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; line-height: 1.4; color: rgba(238, 230, 216, .8); }
+.how li b { display: block; color: var(--paper); font-weight: 700; }
+.how .ic { flex: none; width: 26px; height: 26px; margin-top: 1px; }
+.how .ic svg { width: 26px; height: 26px; fill: var(--paper); stroke: var(--paper); }
+@media (max-width: 620px) { .how ul { grid-template-columns: 1fr; } }
+.gl { pointer-events: auto; cursor: help; font-weight: 800; padding: 0 .28em; margin: 0 .04em; border-radius: .38em; background: rgba(128, 128, 128, .22); background: color-mix(in srgb, currentColor 16%, transparent); -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.gl:hover { background: color-mix(in srgb, currentColor 26%, transparent); }
+.gl:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px; border-radius: 2px; }
+#gloss { --gbg: #0e0b0c; --gfg: #eee6d8; --gdim: rgba(238, 230, 216, .7); position: fixed; z-index: 60; left: 0; top: 0; max-width: min(320px, calc(100vw - 16px)); padding: 14px 16px; background: var(--gbg); color: var(--gfg); border: 1px solid var(--gdim); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,.35); text-align: left; font-family: var(--font-body); opacity: 0; visibility: hidden; transition: opacity .15s; pointer-events: none; }
+#gloss.on { opacity: 1; visibility: visible; }
+#gloss .hw { font-family: var(--font-bn); font-weight: 700; font-size: 26px; line-height: 1.2; }
+#gloss .rm { font-weight: 600; font-size: 15px; margin-left: 8px; color: var(--gdim); }
+#gloss .pr { margin: 4px 0 0; font-size: 13px; color: var(--gdim); font-variant-numeric: tabular-nums; }
+#gloss .pr b { color: var(--gfg); font-weight: 600; letter-spacing: .04em; }
+#gloss .df { margin: 8px 0 0; font-size: 15px; line-height: 1.45; }
+#gloss .df i { color: var(--gdim); margin-right: 6px; }
 #gate .row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
 #gate button { appearance: none; cursor: pointer; background: transparent; color: var(--paper); border: 1px solid var(--faint); border-radius: 999px; padding: 12px 22px; min-height: 44px; font-family: var(--font-mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
 #gate button.main { border-color: var(--vermilion); }
@@ -114,7 +119,6 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
 @media (max-width: 420px) { #h-tr { font-size: 10px; } #h-tl { font-size: 10px; } }
 #gl, #ribbon { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 #gl { z-index: 0; } #ribbon { z-index: 6; }
-#flood, #light, #bg, #frame, #xh, #ruler { display: none !important; }
 #bignum { position: absolute; left: 48px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); text-align: left; opacity: 0; display: flex; align-items: baseline; gap: 0 8px; white-space: nowrap; }
 #bn-num { font-size: clamp(22px, 2.1vw, 30px); font-weight: 700; margin: 0; line-height: 1; color: var(--tx); font-variant-numeric: tabular-nums; }
 #bn-lab { color: var(--tx); letter-spacing: .14em; }
@@ -123,25 +127,25 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
 </style>
 </head>
 <body>
+
 <div id="gate">
-  <p class="mono">Pujo 2026</p>
-  <p>Headphones if you have them. Scroll slowly. The sound begins when you enter.</p>
-  <div class="row">
-    <button id="go-sound" class="main" type="button">Enter</button>
+  <div class="gin">
+    <p class="mono">Pujo 2026</p>
+    <p id="pref" class="pref"></p>
+    <details id="how" class="how">
+      <summary>How to read it</summary>
+      <ul><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="11" cy="19" rx="4" ry="6" transform="rotate(-12 11 19)"/><ellipse cx="22" cy="12" rx="4" ry="6" transform="rotate(12 22 12)"/></svg></span><span><b>Footprints</b>One for every 100 steps walked that day.</span></li><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M2 20 C8 6 12 6 16 16 S24 26 30 10" fill="none" stroke-width="5" stroke-linecap="round"/></svg></span><span><b>Ribbon</b>Wider with more steps. Finer teeth with more phone unlocks.</span></li><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M21 5 A12 12 0 1 0 27 21 A10 10 0 0 1 21 5 Z"/></svg></span><span><b>Dark stretches</b>As long as the sleep before the day.</span></li><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke-width="2" stroke-dasharray="3 4"/></svg></span><span><b>No record</b>A day with no data is left empty, and says so.</span></li><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 12 H10 L17 6 V26 L10 20 H5 Z"/><path d="M21 11 Q25 16 21 21 M24 8 Q31 16 24 24" fill="none" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>Sound</b>Recorded on my phone. Shosthi’s far-off dhak is a filtered copy.</span></li><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2b705"/><stop offset=".55" stop-color="#e8501c"/><stop offset="1" stop-color="#7f93ff"/></linearGradient></defs><circle cx="16" cy="16" r="12" fill="url(#lg)" stroke="none"/></svg></span><span><b>Colour</b>Chosen, not measured. The liquid moves faster on days with more steps.</span></li></ul>
+    </details>
+    <p class="hint">Headphones if you have them. Scroll slowly. The sound begins when you enter.</p>
+    <div class="row"><button id="go-sound" class="main" type="button">Enter</button></div>
   </div>
 </div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="soft" x="-5%" y="-10%" width="110%" height="120%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="1.7" result="b"/><feColorMatrix in="b" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 16 -6.5"/></filter></svg>
 <canvas id="gl"></canvas>
-<div id="flood" class="layer"></div>
-<canvas id="bg"></canvas>
 <canvas id="ribbon"></canvas>
 <canvas id="deco"></canvas>
 <canvas id="walk"></canvas>
-<div id="frame" class="layer"></div>
-<div id="xh"></div>
-<div id="ruler"><b id="rk"></b></div>
-<div id="light"></div>
 <div id="stage" class="layer">
   <div id="h-tl" class="hud"></div>
   <div id="h-tr" class="hud"></div>
@@ -153,7 +157,6 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
     <h2 id="title" class="bn" lang="bn"></h2>
     <p id="en" class="mono"></p>
     <span id="rule"></span>
-    <span id="tag" class="tag">Placeholder, your lines go here</span>
     <p id="txt" class="text"></p>
   </div>
 
@@ -200,19 +203,352 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
   try { history.scrollRestoration = "manual"; } catch (e) {}
 
+  /* ---------------- glossary ---------------- */
+  var GLOSS = [
+ {
+  "k": [
+   "mahalaya"
+  ],
+  "bn": "মহালয়া",
+  "rom": "Mahalaya",
+  "ipa": "/mɔhalajɔ/",
+  "say": "MO-ha-lo-ya",
+  "pos": "noun",
+  "def": "The day, about a week before the main days, that opens the festival season. Many families wake before dawn for a radio recitation of hymns to the goddess."
+ },
+ {
+  "k": [
+   "pujo"
+  ],
+  "bn": "পুজো",
+  "rom": "Pujo",
+  "ipa": "/pudʒo/",
+  "say": "POO-jo",
+  "pos": "noun",
+  "def": "Worship. Here, Durga Pujo, the autumn festival of the goddess Durga."
+ },
+ {
+  "k": [
+   "pandal",
+   "pandals"
+  ],
+  "bn": "প্যান্ডেল",
+  "rom": "pandal",
+  "ipa": "/pjændel/",
+  "say": "PYAN-del",
+  "pos": "noun",
+  "def": "A temporary structure of bamboo and cloth built to house the idol, often elaborately themed. Queuing to get in is part of the ritual."
+ },
+ {
+  "k": [
+   "shosthi"
+  ],
+  "bn": "ষষ্ঠী",
+  "rom": "Shosthi",
+  "ipa": "/ʃɔʃʈʰi/",
+  "say": "SHOSH-thee",
+  "pos": "noun",
+  "def": "The sixth day. The goddess is welcomed and awakened in the evening, just before the four main days."
+ },
+ {
+  "k": [
+   "shoptomi"
+  ],
+  "bn": "সপ্তমী",
+  "rom": "Shoptomi",
+  "ipa": "/ʃɔptɔmi/",
+  "say": "SHOP-to-mee",
+  "pos": "noun",
+  "def": "The seventh day, the first full day of worship. In 2026 it ran across two calendar days."
+ },
+ {
+  "k": [
+   "ashtami"
+  ],
+  "bn": "অষ্টমী",
+  "rom": "Ashtami",
+  "ipa": "/ɔʃʈɔmi/",
+  "say": "OSH-to-mee",
+  "pos": "noun",
+  "def": "The eighth day and the peak of the festival, when crowds gather for anjali in the morning."
+ },
+ {
+  "k": [
+   "nobomi"
+  ],
+  "bn": "নবমী",
+  "rom": "Nobomi",
+  "ipa": "/nɔbɔmi/",
+  "say": "NO-bo-mee",
+  "pos": "noun",
+  "def": "The ninth day, the last full day with the goddess at home."
+ },
+ {
+  "k": [
+   "doshomi"
+  ],
+  "bn": "দশমী",
+  "rom": "Doshomi",
+  "ipa": "/dɔʃɔmi/",
+  "say": "DO-sho-mee",
+  "pos": "noun",
+  "def": "The tenth day, when the goddess is sent back and the idols are immersed."
+ },
+ {
+  "k": [
+   "dhak"
+  ],
+  "bn": "ঢাক",
+  "rom": "dhak",
+  "ipa": "/ɖʰak/",
+  "say": "DHAHK",
+  "pos": "noun",
+  "def": "A large barrel drum carried on the shoulder and played by dhakis throughout the festival. Its sound is the season’s signature."
+ },
+ {
+  "k": [
+   "bodhon"
+  ],
+  "bn": "বোধন",
+  "rom": "bodhon",
+  "ipa": "/bodʰon/",
+  "say": "BO-dhon",
+  "pos": "noun",
+  "def": "The ritual awakening of the goddess, on the evening of Shosthi. It opens the festival proper."
+ },
+ {
+  "k": [
+   "অঞ্জলি",
+   "anjali"
+  ],
+  "bn": "অঞ্জলি",
+  "rom": "anjali",
+  "ipa": "/ɔɲdʒoli/",
+  "say": "ON-jo-lee",
+  "pos": "noun",
+  "def": "A flower offering made with cupped hands, led by a priest. Offered on Ashtami morning, often before the first meal of the day."
+ },
+ {
+  "k": [
+   "bhog"
+  ],
+  "bn": "ভোগ",
+  "rom": "bhog",
+  "ipa": "/bʰog/",
+  "say": "BHOG",
+  "pos": "noun",
+  "def": "Food offered to the goddess and then shared with everyone, usually khichuri, vegetables and a sweet."
+ },
+ {
+  "k": [
+   "maa"
+  ],
+  "bn": "মা",
+  "rom": "Maa",
+  "ipa": "/ma/",
+  "say": "MAA",
+  "pos": "noun",
+  "def": "Mother. In Pujo, the goddess Durga, received as a daughter who has come home for a few days."
+ },
+ {
+  "k": [
+   "dhunuchi naach"
+  ],
+  "bn": "ধুনুচি নাচ",
+  "rom": "dhunuchi naach",
+  "ipa": "/dʰunutʃi natʃ/",
+  "say": "DHU-nu-chee NAACH",
+  "pos": "noun",
+  "def": "A dance with a clay burner of smoking incense (dhunuchi), held in the hands or even the mouth, to the beat of the dhak."
+ },
+ {
+  "k": [
+   "mutton kosha"
+  ],
+  "bn": "কষা মাংস",
+  "rom": "mutton kosha",
+  "ipa": "/kɔʃa mamʃo/",
+  "say": "KO-sha MANG-sho",
+  "pos": "noun",
+  "def": "Mutton slow-cooked in a thick, dark, spiced gravy. A festive staple."
+ },
+ {
+  "k": [
+   "raat er adda"
+  ],
+  "bn": "রাতের আড্ডা",
+  "rom": "raat er adda",
+  "ipa": "/ratɛr adːa/",
+  "say": "RAAT-er AD-da",
+  "pos": "noun",
+  "def": "Late-night, unhurried talk among friends, with no agenda."
+ },
+ {
+  "k": [
+   "sindoor"
+  ],
+  "bn": "সিঁদুর",
+  "rom": "sindoor",
+  "ipa": "/ʃĩdur/",
+  "say": "SHIN-door",
+  "pos": "noun",
+  "def": "Vermilion powder. On Doshomi it is applied to the goddess, and married women smear it on one another."
+ },
+ {
+  "k": [
+   "জয়ধ্বনি",
+   "জয়ধ্বনি"
+  ],
+  "bn": "জয়ধ্বনি",
+  "rom": "joyodhwoni",
+  "ipa": "/dʒɔjoddʰoni/",
+  "say": "JOY-od-dho-nee",
+  "pos": "noun",
+  "def": "A shout of victory or praise. Here, the salutations to the goddess shouted as she is carried away."
+ },
+ {
+  "k": [
+   "bishorjon"
+  ],
+  "bn": "বিসর্জন",
+  "rom": "bishorjon",
+  "ipa": "/biʃɔrdʒon/",
+  "say": "BI-shor-jon",
+  "pos": "noun",
+  "def": "The immersion of the idol in a river or pond. It marks the end of the festival."
+ },
+ {
+  "k": [
+   "মশারি"
+  ],
+  "bn": "মশারি",
+  "rom": "moshari",
+  "ipa": "/moʃaɾi/",
+  "say": "MO-sha-ree",
+  "pos": "noun",
+  "def": "A mosquito net hung over a bed."
+ },
+ {
+  "k": [
+   "পাঞ্জাবি"
+  ],
+  "bn": "পাঞ্জাবি",
+  "rom": "panjabi",
+  "ipa": "/paɲdʒabi/",
+  "say": "PAN-ja-bee",
+  "pos": "noun",
+  "def": "A long, loose kurta. A new one is traditionally bought and worn for Pujo."
+ },
+ {
+  "k": [
+   "পুজো পরিক্রমা"
+  ],
+  "bn": "পুজো পরিক্রমা",
+  "rom": "pujo porikroma",
+  "ipa": "/pudʒo pɔrikrɔma/",
+  "say": "POO-jo PO-ri-kro-ma",
+  "pos": "noun",
+  "def": "A television round-up that tours the year’s major pandals and idols."
+ },
+ {
+  "k": [
+   "gariahat"
+  ],
+  "bn": "গড়িয়াহাট",
+  "rom": "Gariahat",
+  "ipa": "/gɔɽiahat/",
+  "say": "GO-ri-a-haat",
+  "pos": "proper noun",
+  "def": "A crowded market district in south Kolkata, known for street shopping."
+ }
+];
+  var GMAP = {}, GASC = [], GBN = [];
+  GLOSS.forEach(function (e) {
+    e.k.forEach(function (k) {
+      GMAP[k.toLowerCase()] = e;
+      (/^[\x00-\x7f]+$/.test(k) ? GASC : GBN).push(k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    });
+  });
+  var byLen = function (a, b) { return b.length - a.length; };
+  GASC.sort(byLen); GBN.sort(byLen);
+  var GRE = new RegExp("(\\b(?:" + GASC.join("|") + ")\\b|" + GBN.join("|") + ")", "gi");
+  function richText(el, str) {
+    el.textContent = "";
+    var last = 0, m;
+    GRE.lastIndex = 0;
+    while ((m = GRE.exec(str))) {
+      if (m.index > last) el.appendChild(document.createTextNode(str.slice(last, m.index)));
+      var sp = document.createElement("span");
+      sp.className = "gl"; sp.tabIndex = 0; sp.textContent = m[0];
+      sp.setAttribute("data-g", m[0].toLowerCase());
+      el.appendChild(sp);
+      last = m.index + m[0].length;
+    }
+    if (last < str.length) el.appendChild(document.createTextNode(str.slice(last)));
+  }
+  var gcard = document.createElement("div");
+  gcard.id = "gloss"; gcard.setAttribute("role", "tooltip");
+  document.body.appendChild(gcard);
+  var gcur = null, gtimer = 0, gAt = 0, glossDay = null;
+  function gmk(tag, cls, txt) { var n = document.createElement(tag); if (cls) n.className = cls; n.textContent = txt; return n; }
+  function glossShow(el) {
+    var e = GMAP[el.getAttribute("data-g")];
+    if (!e) return;
+    clearTimeout(gtimer); gAt = Date.now();
+    if (gcur && gcur !== el) gcur.removeAttribute("aria-describedby");
+    gcur = el; el.setAttribute("aria-describedby", "gloss");
+    gcard.textContent = "";
+    var h = gmk("div", ""); h.appendChild(gmk("span", "hw", e.bn)); h.appendChild(gmk("span", "rm", e.rom)); h.lang = "bn";
+    gcard.appendChild(h);
+    var pr = gmk("p", "pr", e.ipa + "  \u00b7  "); pr.appendChild(gmk("b", "", e.say)); gcard.appendChild(pr);
+    var df = gmk("p", "df", e.def); df.insertBefore(gmk("i", "", e.pos), df.firstChild); gcard.appendChild(df);
+    var dd = glossDay && el.closest("#txt") ? glossDay : null;
+    if (dd) {
+      var bg = hex(dd.f1), fg = hex(dd.ink);
+      gcard.style.setProperty("--gbg", rgb(bg)); gcard.style.setProperty("--gfg", rgb(fg));
+      gcard.style.setProperty("--gdim", "rgba(" + fg[0] + "," + fg[1] + "," + fg[2] + ",.72)");
+    } else { gcard.style.removeProperty("--gbg"); gcard.style.removeProperty("--gfg"); gcard.style.removeProperty("--gdim"); }
+    gcard.classList.add("on");
+    var r = el.getBoundingClientRect(), cw = gcard.offsetWidth, ch = gcard.offsetHeight, vw = window.innerWidth, vh = window.innerHeight;
+    var x = Math.min(Math.max(8, r.left + r.width / 2 - cw / 2), Math.max(8, vw - cw - 8));
+    var y = r.bottom + 10;
+    if (y + ch > vh - 8) y = Math.max(8, r.top - ch - 10);
+    gcard.style.transform = "translate(" + Math.round(x) + "px," + Math.round(y) + "px)";
+  }
+  function glossHide() {
+    clearTimeout(gtimer);
+    gtimer = setTimeout(function () {
+      gcard.classList.remove("on");
+      if (gcur) { gcur.removeAttribute("aria-describedby"); gcur = null; }
+    }, 80);
+  }
+  var gTarget = function (ev) { return ev.target && ev.target.closest ? ev.target.closest(".gl") : null; };
+  document.addEventListener("pointerover", function (ev) { var t = gTarget(ev); if (t && ev.pointerType !== "touch") glossShow(t); });
+  document.addEventListener("pointerout", function (ev) { if (gTarget(ev) && ev.pointerType !== "touch") glossHide(); });
+  document.addEventListener("focusin", function (ev) { var t = gTarget(ev); if (t) glossShow(t); });
+  document.addEventListener("focusout", function (ev) { if (gTarget(ev)) glossHide(); });
+  document.addEventListener("click", function (ev) {
+    var t = gTarget(ev);
+    if (!t) { glossHide(); return; }
+    if (gcur === t && gcard.classList.contains("on") && ev.pointerType === "touch" && Date.now() - gAt > 350) glossHide(); else glossShow(t);
+  });
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") glossHide(); });
+  window.addEventListener("scroll", function () { if (gcard.classList.contains("on")) glossHide(); }, { passive: true });
+  var PREFACE = "Durga Pujo is the autumn festival of Bengal, when the goddess Maa Durga comes home for a few days as a daughter, and clay idols are worshipped in temporary pandals across the city. The main days run from Shosthi to Doshomi and end with bishorjon, the immersion of the idol, and about a week before them Mahalaya opens the season with a radio recitation before dawn. This piece is my own Pujo in Kolkata, 2026, told through my steps, phone unlocks, sleep and sounds I recorded on the street. Dotted words have a short gloss: hover, focus or tap.";
+  richText($("pref"), PREFACE);
+  try { if (window.innerHeight >= 700 && window.innerWidth >= 700) $("how").open = true; } catch (e) {}
+
   /* ---------------- data ---------------- */
-  function ph(en) { return "[Your lines for " + en + " go here. Two or three lines: the place, the time.]"; }
   var DAY = {
-    mahalaya:  { bn: "মহালয়া", en: "Mahalaya", date: "10 OCT", time: "04:00", steps: null, unlocks: null, sleep: null, c: "#2a3fa8", c2: "#7f93ff", litA: 0.0, litB: 0.15, slit: true },
-    chaturthi: { bn: "চতুর্থী", en: "Choturthi", date: "14 OCT", steps: null, unlocks: null, sleep: null, c: "#9a7a1f", c2: "#e7cf8a", litA: 0.2, litB: 0.3 },
-    panchami:  { bn: "পঞ্চমী", en: "Ponchomi", date: "15 OCT", steps: 23582, unlocks: 54, sleep: 9, c: "#c9971f", c2: "#f1dca5", litA: 0.5, litB: 0.85 },
-    shashthi:  { bn: "ষষ্ঠী", en: "Shosthi", date: "16 OCT", steps: 15428, unlocks: 82, sleep: 5, c: "#d28a1e", c2: "#f4d28a", litA: 0.7, litB: 1.0 },
-    saptami1:  { bn: "সপ্তমী", en: "Shoptomi (1)", date: "17 OCT", steps: 10966, unlocks: 118, sleep: 5, c: "#d4561d", c2: "#f2b08a", litA: 1.0, litB: 0.8 },
-    saptami2:  { bn: "সপ্তমী", en: "Shoptomi (2)", date: "18 OCT", steps: 2454, unlocks: 218, sleep: 10, c: "#7d776c", c2: "#d6d2c8", litA: 0.35, litB: 0.5 },
-    ashtami:   { bn: "অষ্টমী", en: "Ashtami", date: "19 OCT", steps: 9467, unlocks: 97, sleep: 2, c: "#c92a1c", c2: "#efe4cf", litA: 1.0, litB: 0.9 },
-    navami:    { bn: "নবমী", en: "Nobomi", date: "20 OCT", steps: 4378, unlocks: 198, sleep: 7, c: "#b8601a", c2: "#e9b36f", litA: 0.6, litB: 0.25 },
-    dashami:   { bn: "দশমী", en: "Doshomi", date: "21 OCT", steps: 10521, unlocks: 78, sleep: 4, c: "#a52a22", c2: "#8cc3cc", litA: 0.9, litB: 0.0 },
-    ekadashi:  { bn: "একাদশী", en: "Ekadashi", date: "22 OCT", steps: null, unlocks: null, sleep: null, c: "#6d675d", c2: "#b9b2a4", litA: 0.0, litB: 0.0 }
+    mahalaya:  { bn: "মহালয়া", en: "Mahalaya", date: "10 OCT", time: "04:00", steps: null, unlocks: null, sleep: null, litA: 0.0, litB: 0.15 },
+    chaturthi: { bn: "চতুর্থী", en: "Choturthi", date: "14 OCT", steps: null, unlocks: null, sleep: null, litA: 0.2, litB: 0.3 },
+    panchami:  { bn: "পঞ্চমী", en: "Ponchomi", date: "15 OCT", steps: 23582, unlocks: 54, sleep: 9, litA: 0.5, litB: 0.85 },
+    shashthi:  { bn: "ষষ্ঠী", en: "Shosthi", date: "16 OCT", steps: 15428, unlocks: 82, sleep: 5, litA: 0.7, litB: 1.0 },
+    saptami1:  { bn: "সপ্তমী", en: "Shoptomi (1)", date: "17 OCT", steps: 10966, unlocks: 118, sleep: 5, litA: 1.0, litB: 0.8 },
+    saptami2:  { bn: "সপ্তমী", en: "Shoptomi (2)", date: "18 OCT", steps: 2454, unlocks: 218, sleep: 10, litA: 0.35, litB: 0.5 },
+    ashtami:   { bn: "অষ্টমী", en: "Ashtami", date: "19 OCT", steps: 9467, unlocks: 97, sleep: 2, litA: 1.0, litB: 0.9 },
+    navami:    { bn: "নবমী", en: "Nobomi", date: "20 OCT", steps: 4378, unlocks: 198, sleep: 7, litA: 0.6, litB: 0.25 },
+    dashami:   { bn: "দশমী", en: "Doshomi", date: "21 OCT", steps: 10521, unlocks: 78, sleep: 4, litA: 0.9, litB: 0.0 },
   };
   var TEXT = {
   "mahalaya": "Before sunrise, the radio in the living room, and me inside my মশারি, half asleep, a calm blue glow illuminating the curtains. Birendra Krishna Bhadra’s voice does the rest. There is no feeling like it.",
@@ -225,18 +561,18 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   "navami": "Now we start thinking about Maa’s imminent departure, and, being Bengali, we cope by going all out. Dhunuchi naach, mutton kosha and raat er adda (late-night talk) are unmissable.",
   "dashami": "No family likes their daughter to see them sad as she leaves for her in-laws’, so it’s masked by bright red sindoor and relentless dhak. Tears are held back by Maa’s জয়ধ্বনি until bishorjon, and they flow once the only sound left is emptiness. But the city never loses hope."
 };
-  Object.keys(DAY).forEach(function (k) { DAY[k].text = TEXT[k] || ph(DAY[k].en); });
+  Object.keys(DAY).forEach(function (k) { DAY[k].text = TEXT[k]; });
   var FC = {
     mahalaya: ["#8fb0ea", "#e3edff", "#101c4a"], chaturthi: ["#efe6d0", "#fffaf0", "#1d140f"],
     panchami: ["#f2b705", "#ffe27d", "#2b1004"], shashthi: ["#f08a1e", "#ffc46b", "#240c03"],
     saptami1: ["#e8501c", "#ff8c58", "#1d0703"], saptami2: ["#b4b1a8", "#dcd9d0", "#1a1917"],
     ashtami: ["#d61f1a", "#ff5a3c", "#fbf0dc"], navami: ["#b85d17", "#ec9d4d", "#fbf0dc"],
-    dashami: ["#8f1c1c", "#c8372b", "#d9f26a"], ekadashi: ["#e7e1d3", "#f7f3ea", "#6d675d"]
+    dashami: ["#8f1c1c", "#c8372b", "#d9f26a"]
   };
   Object.keys(FC).forEach(function (k) { DAY[k].f1 = FC[k][0]; DAY[k].f2 = FC[k][1]; DAY[k].ink = FC[k][2]; });
   var NIGHT = { f1: "#0b0a10", f2: "#1a1630", ink: "#eee6d8" }, TRIB = { f1: "#0a0505", f2: "#2b0b08", ink: "#eee6d8" }, ENDC = { f1: "#070607", f2: "#100e11", ink: "#eee6d8" };
   function segCol(sg) {
-    if (sg.type === "day" || sg.type === "end") return DAY[sg.day];
+    if (sg.type === "day") return DAY[sg.day];
     if (sg.type === "dark") return NIGHT; if (sg.type === "tribute") return TRIB; return ENDC;
   }
 
@@ -317,7 +653,7 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   });
 
   /* ---------------- audio engine ---------------- */
-  var ctx = null, master = null, comp = null, tickBuf = null, muted = false, audioOn = false;
+  var ctx = null, master = null, comp = null, tickBuf = null, muted = false;
   var TICK_GAIN = 0.15;
 
   function decode(ab) {
@@ -341,7 +677,6 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
     comp.threshold.value = -16; comp.knee.value = 14; comp.ratio.value = 6; comp.attack.value = 0.004; comp.release.value = 0.25;
     master.connect(comp); comp.connect(ctx.destination);
     if (ctx.resume) ctx.resume();
-    audioOn = true;
     loadBuf("audio/unlock.mp4").then(function (b) { tickBuf = b; }).catch(function (e) { console.warn("tick sound", e); });
   }
   function ensure(name) {
@@ -488,13 +823,11 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
   function hex(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
   function rgb(a) { return "rgb(" + (a[0] | 0) + "," + (a[1] | 0) + "," + (a[2] | 0) + ")"; }
-  var INK = [7, 6, 7], PAPER = [238, 230, 216];
   var dots = [];
   (function () { var w = $("dots"); for (var i = 0; i < 19; i++) { var d = document.createElement("i"); d.appendChild(document.createElement("b")); d.style.setProperty("--fd", (-(i * 0.37 % 1.6)).toFixed(2) + "s"); w.appendChild(d); dots.push(d); } })();
 
-  var L = { w: 1.2, h: 8, a: 0.1, c1: hex("#2a3fa8"), c2: hex("#7f93ff"), fa: 0, fc: hex("#c92a1c") };
   var curIdx = -1, entered = false;
-  var light = $("light"), flood = $("flood"), title = $("title");
+  var title = $("title");
 
   /* letters */
   var letters = [], hov = [], lvA = [], mx = -1e4, my = -1e4, svel = 0, prevS = 0;
@@ -540,60 +873,15 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
       wc.beginPath(); wc.ellipse(0, 0, 5.2, 2.6, 0, 0, 6.2832); wc.fill(); wc.restore();
     }
   }
-  var ruler = $("ruler"), rk = $("rk");
-  SEG.forEach(function (sg) { var i = document.createElement("i"); i.style.flex = sg.len + " 0 0"; if (sg.type === "day" || sg.type === "end") i.className = "d"; ruler.insertBefore(i, rk); });
-  var DAYN = SEG.filter(function (x) { return x.type === "day" || x.type === "end"; });
+  var DAYN = SEG.filter(function (x) { return x.type === "day"; });
 
-  /* background: haze, rays, scroll-driven rings, embers (more when sleep was short) */
-  var bg = $("bg"), bx = bg.getContext("2d"), embers = [], pres = 0, lastS = 0, vel = 0;
-  function sizeBG() { bg.width = innerWidth; bg.height = innerHeight; }
-  function rgba(a, al) { return "rgba(" + (a[0] | 0) + "," + (a[1] | 0) + "," + (a[2] | 0) + "," + Math.max(0, al).toFixed(3) + ")"; }
-  function drawBG(seg, p, s, vis) {
-    var W = innerWidth, H = innerHeight;
-    var want = (seg.type === "day" || seg.type === "end") ? vis : (seg.type === "dark" ? 0.3 * vis : 0);
-    pres = lerp(pres, want, 0.08);
-    vel = lerp(vel, Math.min(0.06, Math.abs(s - lastS)), 0.2); lastS = s;
-    bx.clearRect(0, 0, W, H);
-    if (pres < 0.01 && !embers.length) return;
-    var t = reduce ? 0 : performance.now() / 1000, heat = cl(L.fa / 0.55), c1 = L.c1, c2 = L.c2, k;
-    for (k = 0; k < 4; k++) {
-      var x = W * (0.5 + 0.38 * Math.sin(t * 0.07 * (k + 1) + k * 2 + s * 0.15)), y = H * (0.45 + 0.3 * Math.cos(t * 0.05 * (k + 2) + k + s * 0.1)), r = Math.max(W, H) * (0.42 + 0.09 * k);
-      var g = bx.createRadialGradient(x, y, 0, x, y, r); g.addColorStop(0, rgba(c1, (0.1 + 0.2 * heat) * pres)); g.addColorStop(1, rgba(c1, 0));
-      bx.fillStyle = g; bx.fillRect(0, 0, W, H);
-    }
-    for (k = 0; k < 5; k++) {
-      var x0 = W * (0.12 + 0.19 * k) + Math.sin(t * 0.2 + k) * 24, w = 36 + 26 * k, sh = (k % 2 ? 1 : -1) * H * 0.22;
-      var a = (0.035 + 0.075 * heat) * pres * (0.65 + 0.35 * Math.sin(t * 0.4 + k * 1.7));
-      var lg = bx.createLinearGradient(0, 0, 0, H); lg.addColorStop(0, rgba(c2, 0)); lg.addColorStop(0.25, rgba(c2, a)); lg.addColorStop(1, rgba(c2, 0));
-      bx.fillStyle = lg; bx.beginPath(); bx.moveTo(x0 - w / 2, 0); bx.lineTo(x0 + w / 2, 0); bx.lineTo(x0 + w / 2 + sh, H); bx.lineTo(x0 - w / 2 + sh, H); bx.closePath(); bx.fill();
-    }
-    var maxR = Math.hypot(W, H) * 0.6;
-    bx.lineWidth = 1;
-    for (k = 0; k < 6; k++) {
-      var f = (((s * 0.22 + k / 6) % 1) + 1) % 1, ra = (1 - f) * (1 - f) * 0.2 * pres;
-      bx.strokeStyle = rgba(c2, ra); bx.beginPath(); bx.arc(W / 2, H * 0.42, f * maxR, 0, 6.2832); bx.stroke();
-    }
-    if (!reduce) {
-      var rate = pres * (0.12 + 1.3 * heat) + vel * 18, n = Math.floor(rate) + (Math.random() < rate % 1 ? 1 : 0);
-      for (k = 0; k < n && embers.length < 120; k++) embers.push({ x: Math.random() * W, y: H + 8, vx: (Math.random() - 0.5) * 0.3, vy: 0.35 + Math.random() * 1.2, sz: 0.8 + Math.random() * 1.9, ph: Math.random() * 6.28 });
-      var mult = 1 + vel * 60;
-      for (var i = embers.length - 1; i >= 0; i--) {
-        var e = embers[i]; e.y -= e.vy * mult; e.x += e.vx + Math.sin(t * 1.3 + e.ph) * 0.3;
-        if (e.y < -10) { embers.splice(i, 1); continue; }
-        var fl = 0.55 + 0.45 * Math.sin(t * 7 + e.ph * 5), al = (0.2 + 0.7 * (e.y / H)) * fl * Math.max(0.35, pres);
-        bx.fillStyle = rgba(c2, al * 0.25); bx.beginPath(); bx.arc(e.x, e.y, e.sz * 3, 0, 6.2832); bx.fill();
-        bx.fillStyle = rgba(c2, al); bx.beginPath(); bx.arc(e.x, e.y, e.sz, 0, 6.2832); bx.fill();
-      }
-    }
-  }
-
-  /* deco: Bengali pujo vocabulary, all drawn in code. kaash, shiuli, jhalor, alpona, chalchitra, dhunuchi, chorki lights, sindoor */
+  /* deco, all drawn in code: kaash grass and shiuli flowers (Mahalaya), sindoor bursts (Doshomi) */
   var deco = $("deco"), dx = deco.getContext("2d");
   function sizeDeco() { deco.width = innerWidth; deco.height = innerHeight; plumes = null; }
-  var LAY = { kaash: 0, shiuli: 0, bunting: 0, alpona: 0, arch: 0, smoke: 0, lights: 0, sindoor: 0 };
+  var LAY = { kaash: 0, shiuli: 0, sindoor: 0 };
   var LT = { mahalaya: { kaash: 0.95, shiuli: 0.8 }, dashami: { sindoor: 1 } };
   function layerTarget(seg, p) {
-    if (seg.type === "day" || seg.type === "end") {
+    if (seg.type === "day") {
       var o = LT[seg.day] || {}, m = seg.id === "saptami1" ? 1 - sm(cl((p - 0.72) / 0.28)) : 1, r = {};
       for (var k in o) r[k] = o[k] * m; return r;
     }
@@ -603,8 +891,7 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
     }
     return {};
   }
-  var plumes = null, flowers = null, smoke = [], powder = [], clouds = [];
-  var PAL = ["#e2371f", "#f1c24a", "#eee6d8", "#2a8c7a", "#d9488a"];
+  var plumes = null, flowers = null, powder = [], clouds = [];
   function quadPt(x0, y0, cx, cy, x1, y1, t) { var u = 1 - t; return [u * u * x0 + 2 * u * t * cx + t * t * x1, u * u * y0 + 2 * u * t * cy + t * t * y1]; }
 
   function drawKaash(a, t, wind, W, H) {
@@ -633,72 +920,6 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
       dx.restore();
     });
   }
-  function drawBunting(a, t, W, H) {
-    [[0.045, 0.05], [0.1, 0.035]].forEach(function (cfg, si) {
-      var y0 = cfg[0] * H, sag = cfg[1] * H, step = 26, ys = function (x) { var u = x / W * 2.5, fr = u - Math.floor(u); return y0 + sag * Math.sin(Math.PI * fr); };
-      dx.strokeStyle = "rgba(238,230,216," + (a * 0.4).toFixed(3) + ")"; dx.lineWidth = 1; dx.beginPath(); dx.moveTo(-10, ys(-10));
-      for (var x = 0; x <= W + 10; x += 6) dx.lineTo(x, ys(x)); dx.stroke();
-      for (var x2 = 8, i = 0; x2 < W; x2 += step, i++) {
-        var yy = ys(x2), ang = reduce ? 0 : Math.sin(t * 1.3 + i * 0.7 + si) * 0.12; dx.save(); dx.translate(x2, yy); dx.rotate(ang);
-        dx.fillStyle = hexA(PAL[(i + si * 2) % 5], a * 0.8); dx.beginPath(); dx.moveTo(-8, 0); dx.lineTo(8, 0); dx.lineTo(0, 22); dx.closePath(); dx.fill(); dx.restore();
-      }
-    });
-  }
-  function hexA(h, al) { var c = hex(h); return "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + al.toFixed(3) + ")"; }
-  function drawLights(a, t, W, H) {
-    var y0 = 0.2 * H, sag = 0.045 * H;
-    var ys = function (x) { var u = x / W * 3, fr = u - Math.floor(u); return y0 + sag * Math.sin(Math.PI * fr); };
-    dx.strokeStyle = "rgba(238,230,216," + (a * 0.22).toFixed(3) + ")"; dx.lineWidth = 1; dx.beginPath(); dx.moveTo(0, ys(0));
-    for (var x = 0; x <= W; x += 6) dx.lineTo(x, ys(x)); dx.stroke();
-    for (var x2 = 14, i = 0; x2 < W; x2 += 30, i++) {
-      var tw = reduce ? 0.8 : 0.5 + 0.5 * Math.sin(t * 3 + i * 2.1), yy = ys(x2) + 5;
-      dx.fillStyle = "rgba(255,214,130," + (a * 0.16 * tw).toFixed(3) + ")"; dx.beginPath(); dx.arc(x2, yy, 10, 0, 6.2832); dx.fill();
-      dx.fillStyle = "rgba(255,236,190," + (a * 0.9 * (0.4 + 0.6 * tw)).toFixed(3) + ")"; dx.beginPath(); dx.arc(x2, yy, 2.6, 0, 6.2832); dx.fill();
-    }
-  }
-  function petal(r0, r1, w) { var m = (r0 + r1) / 2; dx.moveTo(r0, 0); dx.quadraticCurveTo(m, w, r1, 0); dx.quadraticCurveTo(m, -w, r0, 0); }
-  function drawAlpona(a, t, s, prog, W, H) {
-    var cx = W / 2, cy = H * 0.42, R = Math.min(W * 0.47, H * 0.38);
-    var c = [lerp(PAPER[0], L.c2[0], 0.3), lerp(PAPER[1], L.c2[1], 0.3), lerp(PAPER[2], L.c2[2], 0.3)];
-    var col = function (al) { return "rgba(" + (c[0] | 0) + "," + (c[1] | 0) + "," + (c[2] | 0) + "," + al.toFixed(3) + ")"; };
-    var rv = function (g) { return sm(cl(prog * 1.3 - g * 0.17)); };
-    dx.save(); dx.translate(cx, cy); dx.rotate(s * 0.06); dx.lineWidth = 1.3;
-    var g, i, n, v;
-    v = rv(0); if (v > 0.01) { dx.strokeStyle = col(a * 0.42 * v); dx.beginPath(); n = 8; for (i = 0; i < n; i++) { dx.save(); dx.rotate(i / n * 6.2832); petal(R * 0.08, R * (0.08 + 0.3 * v), R * 0.16 * v); dx.restore(); } dx.stroke(); }
-    v = rv(1); if (v > 0.01) { dx.strokeStyle = col(a * 0.38 * v); dx.beginPath(); n = 16; for (i = 0; i < n; i++) { dx.save(); dx.rotate((i + 0.5) / n * 6.2832); petal(R * 0.3, R * (0.3 + 0.27 * v), R * 0.085 * v); dx.restore(); } dx.stroke(); }
-    v = rv(2); if (v > 0.01) { dx.strokeStyle = col(a * 0.4 * v); dx.beginPath(); n = 8; for (i = 0; i < n; i++) { dx.save(); dx.rotate(i / n * 6.2832); dx.translate(R * 0.66, 0); dx.rotate(1.5708); dx.scale(v, v);
-      dx.moveTo(0, R * 0.06); dx.bezierCurveTo(R * 0.07, R * 0.02, R * 0.07, -R * 0.08, 0, -R * 0.12); dx.bezierCurveTo(R * 0.02, -R * 0.06, -R * 0.02, -R * 0.02, 0, R * 0.06); dx.moveTo(R * 0.035, -R * 0.02); dx.arc(0, -R * 0.02, R * 0.035, 0, 5); dx.restore(); } dx.stroke(); }
-    v = rv(3); if (v > 0.01) { n = 24; for (i = 0; i < n; i++) { var dv = cl(v * n * 1.1 - i); if (dv <= 0) continue; dx.fillStyle = col(a * 0.5 * dv); dx.beginPath(); dx.arc(Math.cos(i / n * 6.2832) * R * 0.84, Math.sin(i / n * 6.2832) * R * 0.84, 2.3, 0, 6.2832); dx.fill(); } }
-    v = rv(4); if (v > 0.01) { dx.strokeStyle = col(a * 0.4 * v); dx.beginPath(); n = 32; var d2 = 6.2832 / n, rr = R * Math.sin(d2 / 2) * 1.02;
-      for (i = 0; i < Math.floor(n * v); i++) { var m = (i + 0.5) * d2; dx.moveTo(Math.cos(m) * R + Math.cos(m + 1.5708) * rr, Math.sin(m) * R + Math.sin(m + 1.5708) * rr); dx.arc(Math.cos(m) * R, Math.sin(m) * R, rr, m - 1.5708 - 3.1416, m - 1.5708, false); }
-      dx.stroke(); }
-    dx.fillStyle = col(a * 0.5); dx.beginPath(); dx.arc(0, 0, R * 0.035, 0, 6.2832); dx.fill();
-    dx.restore();
-  }
-  function drawArch(a, t, W, H) {
-    var hw = Math.min(W * 0.4, H * 0.42), cx = W / 2, topY = H * 0.08, cyc = topY + hw, c2 = L.c2;
-    var st = function (al) { return "rgba(" + (c2[0] | 0) + "," + (c2[1] | 0) + "," + (c2[2] | 0) + "," + al.toFixed(3) + ")"; };
-    [[0, 0.5, 1.6], [12, 0.28, 1]].forEach(function (o) {
-      var w = hw - o[0]; dx.strokeStyle = st(a * o[1]); dx.lineWidth = o[2]; dx.beginPath(); dx.moveTo(cx - w, H); dx.lineTo(cx - w, cyc); dx.arc(cx, cyc, w, Math.PI, 0); dx.lineTo(cx + w, H); dx.stroke();
-    });
-    var rb = hw + 9, Ls = Math.max(0, H - cyc), La = Math.PI * rb, total = 2 * Ls + La, k = 0;
-    for (var d = 0; d < total; d += 17, k++) {
-      var x, y, nx, ny;
-      if (d < Ls) { x = cx - rb; y = H - d; nx = -1; ny = 0; } else if (d < Ls + La) { var ang = Math.PI + (d - Ls) / rb; x = cx + Math.cos(ang) * rb; y = cyc + Math.sin(ang) * rb; nx = Math.cos(ang); ny = Math.sin(ang); } else { x = cx + rb; y = cyc + (d - Ls - La); nx = 1; ny = 0; }
-      var tw = reduce ? 0.8 : 0.6 + 0.4 * Math.sin(t * 2 + k);
-      dx.fillStyle = st(a * 0.6 * tw); dx.beginPath(); dx.arc(x, y, 2, 0, 6.2832); dx.fill();
-      if (k % 3 === 0) { dx.strokeStyle = st(a * 0.38); dx.lineWidth = 1; dx.beginPath(); dx.moveTo(x + nx * 5, y + ny * 5); dx.lineTo(x + nx * 15, y + ny * 15); dx.stroke(); }
-    }
-  }
-  function drawSmoke(a, vel, t, W, H) {
-    if (!reduce && smoke.length < 40 && Math.random() < a * 0.4) smoke.push({ x: W * (0.2 + 0.6 * Math.random()), y: H + 30, r: 18 + Math.random() * 20, vy: 0.5 + Math.random() * 0.6, ph: Math.random() * 6, life: 0 });
-    for (var i = smoke.length - 1; i >= 0; i--) {
-      var q = smoke[i]; q.y -= q.vy * (1 + vel * 30); q.x += Math.sin(t * 0.9 + q.ph + q.y * 0.01) * 0.8; q.r += 0.35; q.life += 0.0035;
-      if (q.life >= 1) { smoke.splice(i, 1); continue; }
-      var al = Math.sin(q.life * Math.PI) * 0.17 * a, g = dx.createRadialGradient(q.x, q.y, 0, q.x, q.y, q.r);
-      g.addColorStop(0, "rgba(226,218,205," + al.toFixed(3) + ")"); g.addColorStop(1, "rgba(226,218,205,0)"); dx.fillStyle = g; dx.fillRect(q.x - q.r, q.y - q.r, q.r * 2, q.r * 2);
-    }
-  }
   function drawSindoor(a, vel, W, H) {
     if (!reduce && (Math.random() < a * 0.03 + vel * 1.4 * a) && powder.length < 500) {
       var bx0 = W * (0.12 + 0.76 * Math.random()), by0 = H * (0.2 + 0.55 * Math.random());
@@ -723,20 +944,14 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
     for (k in LAY) { LAY[k] = lerp(LAY[k], tg[k] || 0, 0.04); if (LAY[k] > 0.01) any = true; }
     dvel = lerp(dvel, Math.min(0.06, Math.abs(s - lastDS)), 0.2); lastDS = s;
     dx.clearRect(0, 0, W, H);
-    if (!any) { smoke.length = 0; powder.length = 0; clouds.length = 0; return; }
-    var prog = (seg.type === "day") ? cl(p * 1.5) : 1;
+    if (!any) { powder.length = 0; clouds.length = 0; return; }
     if (LAY.kaash > 0.01) drawKaash(LAY.kaash, t, dvel, W, H);
-    if (LAY.bunting > 0.01) drawBunting(LAY.bunting, t, W, H);
-    if (LAY.alpona > 0.01) drawAlpona(LAY.alpona, t, s, prog, W, H);
-    if (LAY.arch > 0.01) drawArch(LAY.arch, t, W, H);
-    if (LAY.lights > 0.01) drawLights(LAY.lights, t, W, H);
-    if (LAY.smoke > 0.01) drawSmoke(LAY.smoke, dvel, t, W, H); else smoke.length = 0;
     if (LAY.shiuli > 0.01) drawShiuli(LAY.shiuli, t, dvel, W, H);
     if (LAY.sindoor > 0.01) drawSindoor(LAY.sindoor, dvel, W, H); else { powder.length = 0; clouds.length = 0; }
   }
 
   /* field: liquid colour with a wavy wipe between segments (shader), laal-paar ribbon */
-  var glc = $("gl"), gl = null, GU = {}, flat = false, flow = 0.2;
+  var glc = $("gl"), gl = null, GU = {}, flow = 0.2;
   var FS = "#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n" +
     "uniform vec2 R; uniform float T,P,WP,V,S,O; uniform vec3 A1,A2,B1,B2;\n" +
     "float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}\n" +
@@ -754,12 +969,12 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   function sizeGL() { var sc = innerWidth > 800 ? 0.8 : 0.5; glc.width = Math.max(2, (innerWidth * sc) | 0); glc.height = Math.max(2, (innerHeight * sc) | 0); if (gl) gl.viewport(0, 0, glc.width, glc.height); }
   function initGL() {
     try { gl = glc.getContext("webgl", { antialias: false, powerPreference: "high-performance", alpha: false }); } catch (e) { gl = null; }
-    if (!gl) { flat = true; return; }
+    if (!gl) return;
     function sh(type, src) { var x = gl.createShader(type); gl.shaderSource(x, src); gl.compileShader(x); if (!gl.getShaderParameter(x, gl.COMPILE_STATUS)) console.warn(gl.getShaderInfoLog(x)); return gl.getShaderParameter(x, gl.COMPILE_STATUS) ? x : null; }
     var v = sh(gl.VERTEX_SHADER, "attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}"), f = sh(gl.FRAGMENT_SHADER, FS);
-    if (!v || !f) { gl = null; flat = true; glc.style.display = "none"; return; }
+    if (!v || !f) { gl = null; glc.style.display = "none"; return; }
     var pr = gl.createProgram(); gl.attachShader(pr, v); gl.attachShader(pr, f); gl.linkProgram(pr);
-    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { gl = null; flat = true; glc.style.display = "none"; return; }
+    if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { gl = null; glc.style.display = "none"; return; }
     gl.useProgram(pr);
     var bf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, bf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
     var loc = gl.getAttribLocation(pr, "p"); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
@@ -786,7 +1001,7 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   function drawRibbon(seg, s, shown) {
     var W = innerWidth, H = innerHeight, k = Math.min(1, W / 700), d = seg.day ? DAY[seg.day] : null, tw, tper = 0, ta;
     if (seg.type === "day" && d.steps !== null) { tw = (8 + cl((d.steps - 2000) / 22000) * 34) * k; tper = 1200 / d.unlocks; ta = 1; }
-    else if (seg.type === "day" || seg.type === "end") { tw = 8 * k; ta = 1; }
+    else if (seg.type === "day") { tw = 8 * k; ta = 1; }
     else if (seg.type === "dark") { tw = 4; ta = 0.45; } else { tw = 4; ta = 0; }
     RB.w = lerp(RB.w, tw, 0.08); RB.a = lerp(RB.a, ta, 0.06); RB.t = lerp(RB.t, tper > 0 ? 1 : 0, 0.08); if (tper > 0) RB.per = lerp(RB.per, tper, 0.1);
     var sc = segCol(shown), c = hex(sc.ink), l = hex(sc.f1);
@@ -813,29 +1028,6 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
     rx.globalAlpha = 1;
   }
   var shownIdx = -1;
-  var TRD = { c: "#8a1a10", c2: "#e2371f" };
-  function lightTarget(seg, p) {
-    var T = { w: 2.5, h: 2.5, a: 0.12, d: null, flood: 0 };
-    if (seg.type === "day") {
-      var d = DAY[seg.day], e = envOf(seg, p);
-      T.d = d;
-      if (d.slit) { T.w = lerp(1.2, 5, e); T.h = lerp(8, 72, e); }
-      else { var D = d.steps ? 12 + cl((d.steps - 2000) / 22000) * 62 : 12; var dd = lerp(3, D, e); T.w = dd; T.h = dd; }
-      T.a = 0.2 + 0.6 * e;
-      if (seg.id === "saptami1") T.a *= 1 - sm(cl((p - 0.8) / 0.2));
-      var heat = d.sleep === null ? 0 : cl((11 - d.sleep) / 9);
-      T.flood = heat * 0.55 * e * (seg.id === "saptami1" ? 1 - sm(cl((p - 0.8) / 0.2)) : 1);
-    } else if (seg.type === "dark") {
-      var idx = SEG.indexOf(seg), nx = SEG[idx + 1], dn = nx && nx.day ? DAY[nx.day] : DAY.chaturthi;
-      T.d = dn; T.a = 0.12;
-    } else if (seg.type === "end") {
-      var d2 = DAY.dashami, k = sm(cl(p / 0.55));
-      T.d = d2; T.w = T.h = lerp(14, 2, k); T.a = 0.45 * (1 - k);
-    } else if (seg.type === "tribute") {
-      T.d = TRD; T.a = 0; T.flood = 0.26 * sm(cl((p - 0.15) / 0.4)) * sm(cl((1 - p) / 0.2));
-    } else { T.d = DAY.ekadashi; T.a = 0; }
-    return T;
-  }
 
   function frame() {
     var vh = window.innerHeight, s = window.scrollY / vh;
@@ -847,22 +1039,23 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
 
     if (idx !== curIdx) {
       curIdx = idx;
-      if (seg.type === "day" || seg.type === "end") {
+      if (seg.type === "day") {
         buildTitle(d.bn);
         var ik = hex(d.ink); els.day.style.setProperty("--tx", rgb(ik)); els.day.style.setProperty("--txa", "rgba(" + ik[0] + "," + ik[1] + "," + ik[2] + ",.72)"); $("bignum").style.setProperty("--tx", rgb(ik));
         var seq = DAYN.indexOf(seg) + 1;
         setText($("en"), "en", d.en + "  ·  " + d.date + "  ·  " + (seq < 10 ? "0" : "") + seq + " / " + DAYN.length);
-        $("txt").textContent = d.text;
+        glossDay = d;
+        richText($("txt"), d.text);
       }
     }
 
     var vis = 0;
-    if (seg.type === "day" || seg.type === "end") {
+    if (seg.type === "day") {
       vis = envOf(seg, p);
       var f = Math.min(0.2, 22 / seg.len), ein = sm(cl(p / f)), eout = sm(cl((1 - p) / f));
       var litBase = lerp(d.litA, d.litB, sm(p));
       if (seg.id === "saptami1") litBase *= 1 - sm(cl((p - 0.82) / 0.18));
-      var dc = hex(d.c), nL = letters.length;
+      var nL = letters.length;
       for (var li = 0; li < nL; li++) {
         var fr = nL > 1 ? li / (nL - 1) : 0;
         var inn = cl(ein * 1.7 - 0.7 * fr), out = cl(eout * 1.7 - 0.7 * (1 - fr)), mm = Math.min(inn, out);
@@ -882,10 +1075,9 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
         el.style.textShadow = "none";
       }
       var tin = cl(ein * 1.8 - 0.8) * cl(eout * 1.8 - 0.8);
-      var en = $("en"), tx = $("txt"), tg = $("tag"), ru = $("rule");
+      var en = $("en"), tx = $("txt"), ru = $("rule");
       en.style.opacity = tin.toFixed(3); en.style.transform = "translateY(" + ((1 - tin) * 16).toFixed(1) + "px)";
       tx.style.opacity = (tin * tin).toFixed(3); tx.style.transform = "translateY(" + ((1 - tin) * 24).toFixed(1) + "px)";
-      tg.style.opacity = (tin * tin).toFixed(3);
       ru.style.width = (tin * Math.min(innerWidth * 0.5, 220)).toFixed(0) + "px";
       show("day", vis > 0.003 ? 1 : 0);
       drawWalk(seg, p, d, vis);
@@ -899,12 +1091,6 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
         setText($("bn-num"), "bnn", fmt(shownSteps).replace(/\d/g, function (c) { return DG2[+c]; }));
         $("bignum").style.opacity = tin.toFixed(3);
         setText(hud.bl, "bl", "");
-      } else if (seg.type === "end") {
-        var clock = p < 0.55 ? Math.floor(60 * p / 0.55) : 60;
-        var hh = "00:" + String(clock).padStart(2, "0"); if (clock === 60) hh = "01:00";
-        setText(hud.tr, "tr", p < 0.55 ? hh : "01:00  Record ends");
-        setText(hud.bl, "bl", "No data");
-        tickSeg = null;
       } else {
         setText(hud.tr, "tr", "No record");
         setText(hud.bl, "bl", "");
@@ -945,22 +1131,7 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
     if (!(seg.type === "day")) drawWalk(seg, p, null, 0);
     setText(hud.bc, "bc", stepsDay ? "1 footprint = 100 steps" : "Scroll");
     hud.bc.style.opacity = entered && (s < 4 || (stepsDay && vis > 0.5)) ? "1" : "0";
-    rk.style.top = (cl(s / total) * 100).toFixed(2) + "%";
 
-    // light
-    var T = lightTarget(seg, p), k2 = 0.12;
-    L.w = lerp(L.w, T.w, k2); L.h = lerp(L.h, T.h, k2); L.a = lerp(L.a, T.a, k2); L.fa = lerp(L.fa, T.flood, k2);
-    var c1 = hex(T.d.c), c2 = hex(T.d.c2);
-    for (var q = 0; q < 3; q++) { L.c1[q] = lerp(L.c1[q], c1[q], 0.08); L.c2[q] = lerp(L.c2[q], c2[q], 0.08); L.fc[q] = lerp(L.fc[q], c1[q], 0.08); }
-    var vmin = Math.min(window.innerWidth, window.innerHeight) / 100;
-    light.style.width = L.w + "vmin"; light.style.height = L.h + "vmin";
-    light.style.opacity = L.a.toFixed(3);
-    light.style.filter = "blur(" + cl(Math.min(L.w, L.h) * vmin * 0.14, 3, 36).toFixed(1) + "px)";
-    light.style.setProperty("--c1", rgb(L.c1)); light.style.setProperty("--c2", rgb(L.c2));
-    flood.style.opacity = L.fa.toFixed(3); flood.style.setProperty("--fc", rgb(L.fc));
-
-    var ch = seg.type === "tribute" ? 1 - sm(cl(vis * 1.4)) : 1;
-    $("frame").style.opacity = ch.toFixed(3); $("ruler").style.opacity = ch.toFixed(3); $("xh").style.opacity = (0.5 * ch).toFixed(3);
     var Wd = Math.min(28, seg.len * 0.65), wp = sm(cl((s - (seg.start + seg.len - Wd)) / Wd)), nxt = SEG[idx + 1] || seg, shown = wp > 0.5 ? nxt : seg;
     drawField(seg, nxt, wp, s, idx);
     var si = SEG.indexOf(shown);
@@ -972,7 +1143,7 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   }
 
   /* ---------------- layout, gate ---------------- */
-  function size() { sizeWalk(); sizeBG(); sizeDeco(); sizeRB(); if (gl) sizeGL(); $("spacer").style.height = ((total + 100) * window.innerHeight) + "px"; }
+  function size() { sizeWalk(); sizeDeco(); sizeRB(); if (gl) sizeGL(); $("spacer").style.height = ((total + 100) * window.innerHeight) + "px"; }
   window.addEventListener("resize", size);
   size();
   document.body.style.overflowY = "hidden";
@@ -993,15 +1164,10 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   $("snd").addEventListener("click", function () { setMuted(!muted); });
   $("snd").textContent = "Sound on";
 
-  window.__pz = {
-    total: total, jump: function (id, q) { var g = SEGBY[id]; window.scrollTo(0, (g.start + q * g.len) * window.innerHeight); }, seg: function () { return SEG[curIdx] && SEG[curIdx].id; },
-    playing: function () { return CUES.filter(function (c) { return c.playing; }).map(function (c) { return c.id; }); },
-    audio: function () { return { on: audioOn, ctx: ctx && ctx.state, tick: !!tickBuf }; },
-    errs: function () { return Object.keys(TR).filter(function (k) { return TR[k].err; }); }
-  };
   requestAnimationFrame(frame);
 })();
 </script>
-<noscript><p style="padding:24px;color:#eee6d8;background:#070607">This piece needs JavaScript and sound.</p></noscript>
+
+</body></html>
 </body>
 </html>
