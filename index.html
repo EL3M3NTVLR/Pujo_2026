@@ -45,6 +45,7 @@ body { margin: 0; color: var(--paper); font-family: var(--font-body); -webkit-te
 #h-tl { top: calc(16px + env(safe-area-inset-top, 0px)); left: 48px; }
 #h-tr { top: calc(16px + env(safe-area-inset-top, 0px)); right: 48px; text-align: right; }
 #h-bl { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); left: 48px; }
+#credit { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); left: 48px; max-width: calc(100vw - 150px); font-size: 10px; font-weight: 500; letter-spacing: .03em; text-transform: none; white-space: normal; line-height: 1.35; opacity: 0; pointer-events: none; }
 #h-bc { bottom: calc(40px + env(safe-area-inset-bottom, 0px)); left: 0; right: 0; text-align: center; transition: opacity .6s; }
 #snd { position: absolute; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); right: 34px; pointer-events: auto; appearance: none; background: none; border: 0; color: var(--hud); font: inherit; font-family: var(--font-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; padding: 12px 8px; cursor: pointer; }
 #snd:hover { color: var(--tx); }
@@ -132,7 +133,7 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   <div class="gin">
     <p class="mono">Pujo 2026</p>
     <p id="pref" class="pref"></p>
-    <details id="how" class="how">
+    <details id="how" class="how" open>
       <summary>How to read it</summary>
       <ul><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><ellipse cx="11" cy="19" rx="4" ry="6" transform="rotate(-12 11 19)"/><ellipse cx="22" cy="12" rx="4" ry="6" transform="rotate(12 22 12)"/></svg></span><span><b>Footprints</b>One for every 100 steps walked that day.</span></li><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M2 20 C8 6 12 6 16 16 S24 26 30 10" fill="none" stroke-width="5" stroke-linecap="round"/></svg></span><span><b>Ribbon</b>Wider with more steps. Finer teeth with more phone unlocks.</span></li><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M21 5 A12 12 0 1 0 27 21 A10 10 0 0 1 21 5 Z"/></svg></span><span><b>Dark stretches</b>As long as the sleep before the day.</span></li><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="11" fill="none" stroke-width="2" stroke-dasharray="3 4"/></svg></span><span><b>No record</b>A day with no data is left empty, and says so.</span></li><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 12 H10 L17 6 V26 L10 20 H5 Z"/><path d="M21 11 Q25 16 21 21 M24 8 Q31 16 24 24" fill="none" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>Sound</b>Recorded on my phone. Shosthi’s far-off dhak is a filtered copy.</span></li><li><span class="ic"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f2b705"/><stop offset=".55" stop-color="#e8501c"/><stop offset="1" stop-color="#7f93ff"/></linearGradient></defs><circle cx="16" cy="16" r="12" fill="url(#lg)" stroke="none"/></svg></span><span><b>Colour</b>Chosen, not measured. The liquid moves faster on days with more steps.</span></li></ul>
     </details>
@@ -151,6 +152,7 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   <div id="h-tr" class="hud"></div>
   <div id="h-bl" class="hud"></div>
   <div id="h-bc" class="hud">Scroll</div>
+  <div id="credit" class="hud">Audio: the original Mahishasuramardini radio broadcast, recited by Birendra Krishna Bhadra</div>
   <button id="snd" type="button" aria-pressed="true">Sound on</button>
 
   <div id="day" class="center">
@@ -536,7 +538,6 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
   window.addEventListener("scroll", function () { if (gcard.classList.contains("on")) glossHide(); }, { passive: true });
   var PREFACE = "Durga Pujo is the autumn festival of Bengal, when the goddess Maa Durga comes home for a few days as a daughter, and clay idols are worshipped in temporary pandals across the city. The main days run from Shosthi to Doshomi and end with bishorjon, the immersion of the idol, and about a week before them Mahalaya opens the season with a radio recitation before dawn. This piece is my own Pujo in Kolkata, 2026, told through my steps, phone unlocks, sleep and sounds I recorded on the street. Dotted words have a short gloss: hover, focus or tap.";
   richText($("pref"), PREFACE);
-  try { if (window.innerHeight >= 700 && window.innerWidth >= 700) $("how").open = true; } catch (e) {}
 
   /* ---------------- data ---------------- */
   var DAY = {
@@ -1128,6 +1129,7 @@ button:focus-visible { outline: 2px solid var(--vermilion); outline-offset: 2px;
     }
     var stepsDay = seg.type === "day" && d && d.steps !== null;
     if (!stepsDay) $("bignum").style.opacity = "0";
+    $("credit").style.opacity = seg.id === "mahalaya" ? (0.9 * envOf(seg, p)).toFixed(3) : "0";
     if (!(seg.type === "day")) drawWalk(seg, p, null, 0);
     setText(hud.bc, "bc", stepsDay ? "1 footprint = 100 steps" : "Scroll");
     hud.bc.style.opacity = entered && (s < 4 || (stepsDay && vis > 0.5)) ? "1" : "0";
